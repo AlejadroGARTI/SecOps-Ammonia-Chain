@@ -1,4 +1,119 @@
-wpscan --url http://192.168.1.103:7664 -e vp --plugins-detection aggressive
+wpscan --url http://192.168.1.103:7664 -e ap --plugins-detection aggressive
+
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.28
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: http://192.168.1.103:7664/ [192.168.1.103]
+[+] Started: Tue Jul 14 09:49:26 2026
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entry: Server: lighttpd/1.4.63
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://192.168.1.103:7664/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://192.168.1.103:7664/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://192.168.1.103:7664/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 7.0.1 identified (Latest, released on 2026-07-09).
+ | Found By: Meta Generator (Passive Detection)
+ |  - http://192.168.1.103:7664/, Match: 'WordPress 7.0.1'
+ | Confirmed By: Atom Generator (Aggressive Detection)
+ |  - http://192.168.1.103:7664/?feed=atom, <generator uri="https://wordpress.org/" version="7.0.1">WordPress</generator>
+
+[+] WordPress theme in use: twentytwentyfive
+ | Location: http://192.168.1.103:7664/wp-content/themes/twentytwentyfive/
+ | Latest Version: 1.5 (up to date)
+ | Last Updated: 2026-05-20T00:00:00.000Z
+ | Readme: http://192.168.1.103:7664/wp-content/themes/twentytwentyfive/readme.txt
+ | Style URL: http://192.168.1.103:7664/wp-content/themes/twentytwentyfive/style.css
+ | Style Name: Twenty Twenty-Five
+ | Style URI: https://wordpress.org/themes/twentytwentyfive/
+ | Description: Twenty Twenty-Five emphasizes simplicity and adaptability. It offers flexible design options, suppor...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org
+ |
+ | Found By: Urls In Homepage (Passive Detection)
+ |
+ | Version: 1.5 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://192.168.1.103:7664/wp-content/themes/twentytwentyfive/style.css, Match: 'Version: 1.5'
+
+[+] Enumerating All Plugins (via Aggressive Methods)
+ Checking Known Locations - Time: 00:02:09 <=============================================> (125059 / 125059) 100.00% Time: 00:02:09
+[+] Checking Plugin Versions (via Passive and Aggressive Methods)
+
+[i] Plugin(s) Identified:
+
+[+] akismet
+ | Location: http://192.168.1.103:7664/wp-content/plugins/akismet/
+ | Latest Version: 5.7 (up to date)
+ | Last Updated: 2026-04-23T22:34:00.000Z
+ | Readme: http://192.168.1.103:7664/wp-content/plugins/akismet/readme.txt
+ |
+ | Found By: Known Locations (Aggressive Detection)
+ |  - http://192.168.1.103:7664/wp-content/plugins/akismet/, status: 200
+ |
+ | Version: 5.7 (100% confidence)
+ | Found By: Readme - Stable Tag (Aggressive Detection)
+ |  - http://192.168.1.103:7664/wp-content/plugins/akismet/readme.txt
+ | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
+ |  - http://192.168.1.103:7664/wp-content/plugins/akismet/readme.txt
+
+[+] mail-masta
+ | Location: http://192.168.1.103:7664/wp-content/plugins/mail-masta/
+ | Latest Version: 1.0 (up to date)
+ | Last Updated: 2014-09-19T07:52:00.000Z
+ | Readme: http://192.168.1.103:7664/wp-content/plugins/mail-masta/readme.txt
+ |
+ | Found By: Known Locations (Aggressive Detection)
+ |  - http://192.168.1.103:7664/wp-content/plugins/mail-masta/, status: 403
+ |
+ | Version: 1.0 (80% confidence)
+ | Found By: Readme - Stable Tag (Aggressive Detection)
+ |  - http://192.168.1.103:7664/wp-content/plugins/mail-masta/readme.txt
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Tue Jul 14 09:52:21 2026
+[+] Requests Done: 125070
+[+] Cached Requests: 42
+[+] Data Sent: 34.931 MB
+[+] Data Received: 16.001 MB
+[+] Memory used: 458.059 MB
+[+] Elapsed time: 00:02:55
+
 
 MAIL-MASTA vulnerabildiad
 
