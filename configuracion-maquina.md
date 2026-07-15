@@ -84,7 +84,7 @@ server.username             = "www-data"
 server.groupname            = "www-data"
 server.port                 = 7664
 ```
-Instalacion DB
+Creación y configuración de la base de datos.
 ```bash
 sudo mysql -u root
 
@@ -94,7 +94,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-Instalacion WP
+Instalación de WordPress
 ```bash
 # Limpiar el index por defecto de lighttpd
 sudo rm -f /var/www/html/index.lighttpd.html
@@ -107,11 +107,11 @@ tar -xzvf latest.tar.gz
 # Mover los archivos al directorio web
 sudo cp -r wordpress/* /var/www/html/
 
-# Ajustar los permisos para que Lighttpd (ejecutado bajo el usuario www-data) pueda usarlos
+# Ajustar los permisos para que Lighttpd 
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
 ```
-Instalacuion plugin problematico
+Instalación del plugin MailMasta 1.0
 ```bash
 cd /var/www/html/wp-content/plugins/
 
