@@ -65,7 +65,7 @@ sudo lighty-enable-mod fastcgi
 sudo lighty-enable-mod fastcgi-php
 sudo systemctl restart lighttpd
 ```
-Configuración del puerto de WordPress. El número CAS del amoníaco (NH₃) es 7664-41-7
+## Configuración del puerto de WordPress. El número CAS del amoníaco (NH₃) es 7664-41-7
 ```bash
 sudo nano /etc/lighttpd/lighttpd.conf
 
@@ -84,7 +84,7 @@ server.username             = "www-data"
 server.groupname            = "www-data"
 server.port                 = 7664
 ```
-Creación y configuración de la base de datos.
+## Creación y configuración de la base de datos.
 ```bash
 sudo mysql -u root
 
@@ -94,7 +94,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-Instalación de WordPress
+## Instalación de WordPress
 ```bash
 # Limpiar el index por defecto de lighttpd
 sudo rm -f /var/www/html/index.lighttpd.html
@@ -114,7 +114,7 @@ sudo chmod -R 755 /var/www/html/
 ![](Evidencias_Visuales/wordpressconfig)
 ![](Evidencias_Visuales/wordpresscredentials)
 
-Instalación del plugin MailMasta 1.0
+## Instalación del plugin MailMasta 1.0
 ```bash
 cd /var/www/html/wp-content/plugins/
 
