@@ -1,5 +1,6 @@
-### Diagrama de la arquitectura del sistema
+# Configuración del servidor, de la arquitectura y de la configuración del sistema
 
+### Diagrama de la arquitectura del sistema
 ```bash
                                                ┌────────┐
                                                │  WEB   │
