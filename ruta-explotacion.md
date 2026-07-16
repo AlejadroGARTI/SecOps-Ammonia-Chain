@@ -386,7 +386,7 @@ Aqui vemos que tenemos que el texto Ha sido cifrado mediante ROT8000, ((R))enio,
 Y descomprimimos el archivo:
 
 ```bash
-unzip -p 'Proceso Haber-Bosch para la producción de amoníaco.zip'
+unzip 'Proceso Haber-Bosch para la producción de amoníaco.zip'
 ```
 
 En donde la flag se encontraría en proceso_haber_bosch.txt:
@@ -394,10 +394,7 @@ En donde la flag se encontraría en proceso_haber_bosch.txt:
 fl4gyflag{empieza la primera guerra mundial, enviar de inmediato todo a guerra_quimica.txt}
 ```
 
-Y aqui tenemos otra pista para continuar, hay que ver el archivo guerra_quimica.txt en donde nos dice: ver de inmediato /etc/crontab
-
-Por lo que procedemos a la segunda parte de la busqueda:
-
+Y aqui tenemos otra pista para continuar, hay que ver el archivo guerra_quimica.txt en donde nos dice: ver de inmediato /etc/crontab, por lo que procedemos a la segunda parte de la busqueda:
 
 ---
 ---
