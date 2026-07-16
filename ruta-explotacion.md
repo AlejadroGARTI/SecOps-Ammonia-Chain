@@ -455,6 +455,16 @@ bash: no job control in this shell
 clara_immerwahr@ammonia:~$ 
 ```
 
+---
+---
+
+### FLAG #2: Clara Immerwahr
+
+
+
+---
+---
+
 ## Escalada a Root mediante Sudoers con Awk usando GFTOBins
 
 Ejecución del comando sudo awk 'BEGIN {system("/bin/sh")}' gracias al privilegio NOPASSWD configurado para clara_immerwahr sobre /usr/bin/awk en el archivo sudoers. Esto permite a la usuaria ejecutar awk como root, y al usar la función system() dentro de un bloque BEGIN, se obtiene una shell interactiva con privilegios de superusuario, logrando así la escalada completa a root.
