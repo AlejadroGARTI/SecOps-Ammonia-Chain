@@ -501,6 +501,8 @@ clara_immerw
 Sacamos los números tachados desde la página web de Clara y tulizamos la operación XOR
 
 ![](Evidencias_Visuales/tachada1)
+
+
 ![](Evidencias_Visuales/tachada2)
 
 ```bash
