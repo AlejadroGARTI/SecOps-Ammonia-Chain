@@ -496,7 +496,6 @@ Todo experimento comienza en base dos.
 
 El resultado no es un número.
 Es la llave que abre el archivo oculto.
-clara_immerw
 ```
 Sacamos los números tachados desde la página web de Clara y tulizamos la operación XOR
 
