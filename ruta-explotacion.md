@@ -379,7 +379,7 @@ en donde la pista se encuentra en la sección "No usar para la reacción"
 
 ![](Evidencias_Visuales/paginahaber)
 
-Aqui vemos que tenemos que el texto Ha sido cifrado mediante ROT8000, ((R))enio, ((O))smio , ((T))antalio , Octaoxígeno ((8)) , Neutronio ((0)) , Neutronio ((0)) , Neutronio ((0)), lo desciframos en cyberchef y nos da la clave para el .zip
+Aquí vemos que el texto ha sido cifrado mediante ROT8000, ((R))enio, ((O))smio , ((T))antalio , Octaoxígeno ((8)) , Neutronio ((0)) , Neutronio ((0)) , Neutronio ((0)), lo desciframos en cyberchef y nos da la clave para el .zip
 
 𝑁簱𝑔簲簴簼𝐻 簱𝑔簲鶣簻𝑁𝐻簱𝑔簲 罻𝐻粗籆鷩簽簿簵簻 𝑘𝑗簸𝑚𝑜𝑙 = 𝑁(𝑔)+3𝐻 (𝑔)⇌2𝑁𝐻(𝑔) Δ𝐻°=−46,2 𝑘𝑗/𝑚𝑜𝑙
 
