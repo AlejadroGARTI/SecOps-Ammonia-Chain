@@ -400,7 +400,7 @@ Y aqui tenemos otra pista para continuar, hay que ver el archivo guerra_quimica.
 
 ---
 ---
-## Escalada a Clara mediante Cron Mal Configurado
+## Escalada a Clara mediante cron mal configurado
 
 Ya que tenemos la pista de ver /etc/crontab, tenemos que lograr la obtención de acceso al usuario clara_immerwahr explotando la tarea cron que ejecuta el script /opt/scripts/backup_notes.sh con sus privilegios cada minuto. Al tener permisos de escritura en el script (777), se inyecta una reverse shell que se conecta al puerto 9001 de la máquina atacante, obteniendo así una shell interactiva con los permisos de clara_immerwahr cuando el cron ejecute el script modificado.
 
