@@ -502,13 +502,62 @@ Sacamos los números tachados desde la página web de Clara y tulizamos la opera
 
 ![](Evidencias_Visuales/tachada1)
 
-
 ![](Evidencias_Visuales/tachada2)
 
 ```bash
 clara_immerwahr@ammonia:~/documents$ python3 -c "print(1870 ^ 1900)" 
 34
 ```
+Seguimos indagando y encontramos 
+
+```bash
+clara_immerwahr@ammonia:~/documents$ cd conflicto_etico/
+clara_immerwahr@ammonia:~/documents/conflicto_etico$ ls -la
+total 20
+drwx------ 2 clara_immerwahr clara_immerwahr 4096 Jul 16 11:15 .
+drwxr-xr-x 3 clara_immerwahr clara_immerwahr 4096 Jul 16 11:16 ..
+-rw-r--r-- 1 clara_immerwahr clara_immerwahr  313 Jul 16 11:15 carta_1915.txt
+-rw------- 1 clara_immerwahr clara_immerwahr   72 Jul 16 11:15 .clara_ultimas_palabras
+-rw-r--r-- 1 clara_immerwahr clara_immerwahr  404 Jul 16 11:15 notas_personales.txt
+```
+
+Vemos que este archivo se encuentra cifrado
+```bash
+clara_immerwahr@ammonia:~/documents/conflicto_etico$ cat .clara_ultimas_palabras
+DNCEYGN}AMLMAKOKGLVM}AKGLVKDKAM}FG@G}RPGQGPTCP}NC}TKFC}[}LM}FGQVPWKPNC_
+```
+
+Vemos el resto de documentos
+
+```bash
+clara_immerwahr@ammonia:~/documents/conflicto_etico$ cat notas_personales.txt
+NOTAS DE CLARA - 1914
+
+Cada día me pregunto: ¿para qué sirve el conocimiento si se usa para matar?
+
+Fritz dice que es por el bien de Alemania.
+Yo digo que es una traición a la humanidad.
+
+1870 - El año en que nací. Un siglo de promesas.
+1900 - Mi doctorado. La cima de mi carrera.
+1915 - El fin de todo.
+
+Dos números que definen mi vida.
+Dos números que esconden la verdad.
+
+Inspecciona mi historia.
+```
+
+Y encontramos que tenemos que inspeccionar su historia, por lo que nos devolvemos a la WEB
+
+![](Evidencias_Visuales/inspeccionclara)
+
+Encontramos la función que nos permite descifrar la flag, solo reemplazamos los valores obtenidos anteriormente.
+
+ ```bash
+python3 -c "cifrado='DNCEYGN}AMLMAKOKGLVM}AKGLVKDKAM}FG@G}RPGQGPTCP}NC}TKFC}[}LM}FGQVPWKPNC_'; clave=34; print(''.join(chr(ord(c)^clave) for c in cifrado))"
+```
+
 ---
 ---
 
