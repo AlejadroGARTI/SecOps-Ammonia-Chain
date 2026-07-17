@@ -628,6 +628,112 @@ Matching Defaults entries for root on ammonia:
 User root may run the following commands on ammonia:
     (ALL : ALL) ALL
 ```
+---
+---
+
+### FLAG #3: Root
+
+```bash
+root@ammonia:/# ls -la
+total 2097252
+drwxr-xr-x  24 root root       4096 Jul 17 08:34 .
+drwxr-xr-x  24 root root       4096 Jul 17 08:34 ..
+lrwxrwxrwx   1 root root          7 Sep 11  2024 bin -> usr/bin
+drwxr-xr-x   4 root root       4096 Jul 14 10:00 boot
+drwxr-xr-x   5 root root       4096 Jul 17 07:59 catalisis
+dr-xr-xr-x   2 root root       4096 Sep 11  2024 cdrom
+drwxr-xr-x  20 root root       4100 Jul 15 08:06 dev
+drwxr-xr-x 101 root root       4096 Jul 16 07:29 etc
+drwxr-xr-x   4 root root       4096 Jul 14 14:22 home
+drwxr-xr-x   5 root root       4096 Jul 17 07:59 laboratorio
+lrwxrwxrwx   1 root root          7 Sep 11  2024 lib -> usr/lib
+lrwxrwxrwx   1 root root          9 Sep 11  2024 lib32 -> usr/lib32
+lrwxrwxrwx   1 root root          9 Sep 11  2024 lib64 -> usr/lib64
+lrwxrwxrwx   1 root root         10 Sep 11  2024 libx32 -> usr/libx32
+drwx------   2 root root      16384 Jul 14 08:45 lost+found
+drwxr-xr-x   2 root root       4096 Sep 11  2024 media
+drwxr-xr-x   2 root root       4096 Sep 11  2024 mnt
+drwxr-xr-x   3 root root       4096 Jul 17 08:01 opt
+dr-xr-xr-x 284 root root          0 Jul 15 08:06 proc
+drwxr-xr-x   5 root root       4096 Jul 17 07:59 procesos
+drwx------   5 root root       4096 Jul 17 08:01 root
+drwxr-xr-x  35 root root       1020 Jul 17 07:44 run
+lrwxrwxrwx   1 root root          8 Sep 11  2024 sbin -> usr/sbin
+drwxr-xr-x   5 root root       4096 Jul 17 07:59 sintesis
+-rw-r--r--   1 root root        304 Jul 17 08:16 sintesis_catalitica_amonio.zip
+drwxr-xr-x   7 root root       4096 Jul 15 08:12 snap
+drwxr-xr-x   2 root root       4096 Sep 11  2024 srv
+-rw-------   1 root root 2147483648 Jul 14 08:47 swap.img
+dr-xr-xr-x  13 root root          0 Jul 15 08:06 sys
+drwxrwxrwt  15 root root       4096 Jul 17 08:19 tmp
+drwxr-xr-x  14 root root       4096 Sep 11  2024 usr
+drwxr-xr-x  14 root root       4096 Jul 14 10:02 var
+```
+
+Buscamos dentro de los directorios y archivos para encontrar pistas 
+
+```bash
+root@ammonia:/# cat laboratorio/logs/bitacora_diaria.log
+la ultima pista se encuentra en 3) Síntesis catalítica del amonio
+root@ammonia:/# cat laboratorio/experimentos/notas_investigacion.txt
+Los parametros optimos estan en dos lugares: visual y sistema
+root@ammonia:/# cat laboratorio/resultados/resumen_ejecutivo.txt
+La clave de acceso esta fragmentada intencionalmente
+```
+
+![](Evidencias_Visuales/captura3)
+
+```bash
+root@ammonia:/# cat sintesis/amonio/pureza_producto.txt
+Pureza amonio: 99.8% tras purificacion
+```
+
+```bash
+root@ammonia:/# cat sintesis/nitrato/subproductos.txt
+Subproductos: CO2, H2O, N2O     Revisar archivos .bak en /root, suelen tener respaldos importantes
+```
+
+```bash
+root@ammonia:/# cd /root/
+root@ammonia:~# ls -la
+total 68
+drwx------  5 root root 4096 Jul 17 08:45 .
+drwxr-xr-x 24 root root 4096 Jul 17 08:34 ..
+-rw-r--r--  1 root root 3106 Oct 15  2021 .bashrc
+-rw-r--r--  1 root root   16 Jul 17 08:45 .catalizador_hibrido.bak
+-rw-r--r--  1 root root   27 Jul 17 08:01 conversion_parcial.txt
+-rw-r--r--  1 root root   27 Jul 17 08:01 datos_experimento.zip
+-rw-r--r--  1 root root   24 Jul 17 08:01 flujo_masico.dat
+-rw-r--r--  1 root root   79 Jul 17 08:01 llave_cifrada.key
+drwx------  3 root root 4096 Jul 14 10:06 .local
+-rw-------  1 root root  511 Jul 14 11:28 .mysql_history
+-rw-r--r--  1 root root   41 Jul 17 08:01 presion_optima.cfg
+-rw-r--r--  1 root root  161 Jul  9  2019 .profile
+-rw-r--r--  1 root root   20 Jul 17 08:01 selectividad.log
+-rw-r--r--  1 root root    6 Jul 17 08:00 .sintesis_amonio.bak
+drwx------  3 root root 4096 Jul 14 08:56 snap
+drwx------  2 root root 4096 Jul 14 08:56 .ssh
+-rw-r--r--  1 root root    0 Jul 17 08:38 .sudo_as_admin_successful
+-rw-r--r--  1 root root   26 Jul 17 08:01 temperatura_lecho.log
+```
+
+```bash
+root@ammonia:~# cat .catalizador_hibrido.bak
+H4b3rB0sch+3H2!
+```
+
+Combinamos las dos mitades: H4b3rB0sch+3H2!NH3
+
+Descomprimimos el archivo y obtenemos la última flag: 
+
+```bash
+root@ammonia:/# unzip -p sintesis_catalitica_amonio.zip
+[sintesis_catalitica_amonio.zip] el_hombre_que_mato_y_salvo_a_millones.txt password:
+https://www.youtube.com/watch?v=SeqKSRRpAH8
+```
+
+---
+---
 
 ```bash
 [ Atacante (Kali) ]
