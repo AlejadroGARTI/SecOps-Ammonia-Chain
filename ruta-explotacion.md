@@ -737,19 +737,6 @@ root@ammonia:/# unzip -p sintesis_catalitica_amonio.zip
 [sintesis_catalitica_amonio.zip] el_hombre_que_mato_y_salvo_a_millones.txt password:
 https://www.youtube.com/watch?v=SeqKSRRpAH8
 ```
-
 ---
 ---
 
-```bash
-[ Atacante (Kali) ]
-       │
-       ▼ (LFI en WordPress)
-[ user: haber_fritz ]  <-- (Sabe de química y procesos industriales)
-       │
-       ▼ (Movimiento Lateral: Tarea Cron / Script inseguro)
-[ user: clara_immerwahr ] <-- (Su esposa, química brillante y pacifista opositora)
-       │
-       ▼ (Escalada de Privilegios: GTFOBins vía sudo o SUID)
-[ ROOT ]
-```
