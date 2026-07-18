@@ -812,7 +812,7 @@ active
 
 ### 6.6. Incidencia controlada y recuperación
 
-Ver ejemplo del aparto 3.2
+Ver ejemplo del apartado 3.2
 
 - Qué servicio se detuvo: Se detuvo el demonio encargado de la ejecución de tareas programadas del sistema operativo (cron.service).
 
