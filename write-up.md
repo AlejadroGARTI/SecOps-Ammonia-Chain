@@ -632,11 +632,11 @@ User clara_immerwahr may run the following commands on ammonia:
 
   - La configuración de clara_immerwahr es críticamente insegura en un entorno de producción real, pero está diseñada de forma excelente para el propósito del reto. awk posee directivas internas (como system()) que permiten interactuar de forma nativa con el sistema operativo subyacente.
 
-4. Si forman parte de la escalada de privilegios
+4. Si forman parte de la escalada de privilegios:
 Esto constituye el vector definitivo de escalada de privilegios vertical (Salto a Root).
 Al tener acceso irrestricto a /usr/bin/awk sin contraseña, el alumno (tras haber tomado control de la cuenta de Clara) puede explotar la debilidad del binario para forzar la apertura de una shell interactiva que heredará automáticamente el UID de la identidad ejecutora (root). La línea de explotación exacta que completará el reto es: `sudo awk 'BEGIN {system("/bin/bash")}'`
 
-5. Cómo deberían corregirse
+5. Cómo deberían corregirse:
 Para mitigar esta vulnerabilidad en un entorno empresarial y securizar por completo la directiva, se deberían aplicar las siguientes contramedidas de hardening:
 
   - Eliminar la directiva NOPASSWD: Forzar siempre la re-autenticación del usuario para mitigar ataques basados en el secuestro de sesiones o movimientos laterales automáticos.
@@ -669,10 +669,10 @@ sudo chown root:root /opt/scripts/backup.sh
 
 #### Vector 2: Escalada de Privilegios Vertical (De clara_immerwahr a root)
 
-1. Qué usuario o recurso está afectado
+1. Qué usuario o recurso está afectado:
 La directiva de privilegios del archivo de configuración de sudoers (/etc/sudoers) asociada a la usuaria clara_immerwahr.
 
-2. Qué permiso se ha configurado incorrectamente
+2. Qué permiso se ha configurado incorrectamente:
 Se ha configurado una regla de ejecución delegada extremadamente permisiva y sin validación de credenciales: `clara_immerwahr ALL=(ALL) NOPASSWD: /usr/bin/awk`
 
 3. Cómo puede aprovecharse: 
@@ -681,12 +681,161 @@ Al tomar control de la cuenta de Clara, el auditor ejecuta sudo -l y descubre la
 4. Qué impacto tiene: 
 Compromiso total del sistema (Escalada Vertical): El atacante obtiene acceso como root (UID 0), logrando el control absoluto sobre el servidor ammonia, pudiendo leer cualquier flag residual, alterar el sistema de archivos o persistir indefinidamente.
 
+5. Cómo se corregiría: 
+Sustituir el binario genérico por un script restringido en los sudoers o eliminar la regla por completo si no es estrictamente necesaria. En caso de requerirse, se debe exigir siempre la contraseña quitando el flag NOPASSWD y asegurar que el binario no pueda realizar llamadas al sistema (system): `clara_immerwahr ALL=(ALL) /usr/bin/custom_filter_script`
+
 ### 5.8. Comprobación final
+
+| Comprobación | Comando o evidencia | Resultado | Cumple | Acción correctiva |
+|--------------|---------------------|-----------|--------|-------------------|
+| Usuario autorizado | `id clara_immerwahr` | uid=1001(clara_immerwahr) gid=1001... Identidad operativa para el movimiento lateral. | Sí | No necesaria. |
+| Usuario no autorizado | `id haber_fritz` | uid=1000(haber_fritz)... Operando como usuario raso de entrada al laboratorio. | Sí | No necesaria. |
+| Aislamiento del Servicio | `id www-data` | uid=33(www-data). Correctamente aislado del filtrado de shells activas (nologin). | Sí | No necesaria. |
+| Permisos de Directorios | `ls -ld /opt/scripts` | drwxr-xr-x (755) bajo la propiedad estricta de root:root. | Sí | No necesaria. |
+| Evidencia de Vulnerabilidad | `ls -l /opt/scripts/backup.sh` | -rwxrwxrwx (777). Fichero interno modificable por others (vía para el reto). | Sí | No necesaria. |
+| Acceso SSH | Conexión remota local | Correcta. El usuario haber_fritz puede autenticarse de forma interactiva por consola. | Sí | No necesaria. |
+| Privilegios (Entrada) | `haber_fritz@ammonia:~$ sudo -l` | Denegado. haber_fritz is not in the sudoers file. Degradación y blindaje completados con éxito. | Sí | No necesaria. |
+| Privilegios (Escalada) | `clara_immerwahr@ammonia:/$ sudo -l` | Documentados. Acceso específico a (ALL) NOPASSWD: /usr/bin/awk (vector final a Root). | Sí | No necesaria. |
 
 ---
 ---
 
 ## 6. Evaluación de servicios de comunicaciones
+
+### 6.1. Configuración de red
+
+Hay que tener en cuenta que la IP de la red variará dependiendo de la red en la que se encuentre, está prueba se hizo usando la conexión bridged, de manera nativa se encuentra en NAT
+
+```bash
+clara_immerwahr@ammonia:/$ ip -br address
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+ens33            UP             192.168.1.103/24 metric 100 fe80::20c:29ff:fe54:a8c3/64
+clara_immerwahr@ammonia:/$ ip route
+default via 192.168.1.1 dev ens33 proto dhcp src 192.168.1.103 metric 100
+80.58.61.250 via 192.168.1.1 dev ens33 proto dhcp src 192.168.1.103 metric 100
+80.58.61.254 via 192.168.1.1 dev ens33 proto dhcp src 192.168.1.103 metric 100
+192.168.1.0/24 dev ens33 proto kernel scope link src 192.168.1.103 metric 100
+192.168.1.1 dev ens33 proto dhcp scope link src 192.168.1.103 metric 100
+clara_immerwahr@ammonia:/$ ip -s link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    RX:  bytes packets errors dropped  missed   mcast
+         10112     120      0       0       0       0
+    TX:  bytes packets errors dropped carrier collsns
+         10112     120      0       0       0       0
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 00:0c:29:54:a8:c3 brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast
+       2450457    6353      0     111       0       0
+    TX:  bytes packets errors dropped carrier collsns
+        435734    2268      0       0       0       0
+    altname enp2s1
+```
+1. Qué interfaz está activa:
+El sistema operativo cuenta con dos interfaces lógicas. La interfaz de bucle local (lo) para comunicaciones internas, y la interfaz física principal ens33, la cual se encuentra en estado UP (activa y operativa).
+
+2. Qué dirección IP utiliza: 
+La interfaz principal ens33 tiene asignada la dirección IPv4 privada 192.168.1.103 asignada dinámicamente mediante el protocolo DHCP (proto dhcp).
+
+3. Qué máscara de red tiene: 
+La máscara de red está definida por la notación CIDR /24, lo que equivale a una máscara de subred de clase C tradicional: 255.255.255.0. Esto indica que el segmento local de red abarca desde la dirección 192.168.1.1 hasta la 192.168.1.254.
+
+4. Qué puerta de enlace utiliza: 
+La puerta de enlace predeterminada (Default Gateway) es 192.168.1.1 (default via 192.168.1.1). Toda petición que vaya dirigida hacia el exterior o internet se enruta de forma obligatoria a través de este dispositivo.
+
+5. Qué modo de red se ha configurado en VMware: 
+El hipervisor VMware está configurado en modo Adaptador de puente (Bridged). Esto se evidencia de forma inequívoca debido a dos factores:
+
+  - La máquina ha obtenido una IP del rango doméstico estándar (192.168.1.X), actuando como un host físico más dentro de la red local.
+
+  - La tabla de rutas ha mapeado de forma automática servidores DNS externos (80.58.61.250 y .254), típicos del proveedor de internet físico del entorno (Movistar).
+  - Cabe aclarar de nuevo que esta configuración es unicamente para el entorno de producción, la versión de la máquina original presenta una conexión NAT.
+
+6. Si existen errores o paquetes descartados: 
+  - Errores: El contador de errores tanto en recepción (RX) como en transmisión (TX) se mantiene en 0, garantizando que la tarjeta de red virtual y el medio físico no sufren de fallos de colisión o corrupción de tramas.
+
+  - Paquetes descartados (Dropped): En el bloque de recepción (RX), se registran 111 paquetes descartados. Este descarte es completamente normal en el modo Bridge, ya que la interfaz recibe tráfico de difusión global de la red física (Broadcast/Multicast de otros equipos de la casa) que el kernel de la máquina virtual decide ignorar de forma segura al no ir dirigidos específicamente a su IP.
+  - 
+### 6.2. Identificación de puertos y servicios
+
+Ver: - [Write-up de resolución](ruta-explotacion.md)
+
+### 6.3. Prueba de conectividad
+
+```bash
+C:\Users\XPC>ping -n 10 192.168.1.103
+
+Haciendo ping a 192.168.1.103 con 32 bytes de datos:
+Respuesta desde 192.168.1.103: bytes=32 tiempo=5ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=11ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=16ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=9ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=5ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=11ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=4ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=7ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=4ms TTL=64
+Respuesta desde 192.168.1.103: bytes=32 tiempo=7ms TTL=64
+
+Estadísticas de ping para 192.168.1.103:
+    Paquetes: enviados = 10, recibidos = 10, perdidos = 0
+    (0% perdidos),
+Tiempos aproximados de ida y vuelta en milisegundos:
+    Mínimo = 4ms, Máximo = 16ms, Media = 7ms
+```
+- Se enviaron 10 paquetes
+- Se recibieron 10 paquetes
+- No existe perdida de paquetes
+- Latencia media de 7ms
+- Se cumple con el plan de explotación
+
+### 6.4. Tiempo de respuesta
+
+```bash
+C:\Users\XPC>curl -o /dev/null -s -w "Codigo HTTP: %{http_code}\nTiempo total: %{time_total}s\n" http://192.168.1.103:7664/
+Codigo HTTP: 200
+Tiempo total: 1.072602s
+```
+- Código HTTP: 200
+- Cuánto tardó en responder: 1.072602s
+- Cumple con el límite establecido
+- Qué causas podrían provocar una respuesta lenta: Escaneos masivos y cargas elevadas en la base de datos, entre otras.
+
+### 6.5. Disponibilidad de los servicios
+
+```bash
+clara_immerwahr@ammonia:/$ systemctl is-active ssh
+active
+clara_immerwahr@ammonia:/$ systemctl is-active lighttpd
+active
+```
+
+### 6.6. Incidencia controlada y recuperación
+
+Ver ejemplo del aparto 3.2
+
+- Qué servicio se detuvo: Se detuvo el demonio encargado de la ejecución de tareas programadas del sistema operativo (cron.service).
+
+- Cómo se detectó la interrupción: Se detectó inspeccionando el estado del servicio mediante systemctl status, el cual cambió de active (running) a inactive (dead).
+
+- Qué ocurrió con la comunicación: Se interrumpió la comunicación interna y el flujo temporal; la ejecución del script por minuto se congeló por completo.
+
+- Qué información apareció en los registros: Los registros confirmaron el cierre seguro mediante las trazas Stopping..., Deactivated successfully y Stopped.
+
+- Cómo se recuperó el servicio: El servicio se restableció manualmente en caliente ejecutando el comando de inicialización sudo systemctl start cron.
+
+- Si vuelve a cumplir el plan de explotación: Sí, la reactivación del servicio vuelve a habilitar el vector de movimiento lateral automático hacia la cuenta de Clara.
+
+### 6.7. Comprobación final
+
+| Parámetro | Comando o evidencia | Resultado | Cumple | Acción correctiva |
+|-----------|---------------------|-----------|--------|-------------------|
+| Interfaz activa | `ip -br address` | Interfaz ens33 en estado UP con la IP privada 192.168.1.103/24. | Sí | No necesaria. |
+| Puertos declarados | `ss -tlnp` (en máquina) | El servicio web opera correctamente en el puerto personalizado 7664 en lugar del 80. | Sí | No necesaria. |
+| Pérdida de paquetes | `ip -s link` | 0 % de errores en hardware virtual. Los 111 descartes en RX son normales por el modo Bridge. | Sí | No necesaria. |
+| Tiempo de respuesta | `curl` (desde Windows) | 1.07 segundos con código HTTP 200. Rendimiento óptimo para el procesamiento dinámico de WordPress. | Sí | No necesaria. |
+| Servicio SSH | `systemctl is-active ssh` | Activo. Permite la intrusión inicial controlada del alumno mediante el usuario haber_fritz. | Sí | No necesaria. |
+| Recuperación | `systemctl start cron` | Correcta. El demonio de tareas programadas se levantó tras su parada, restaurando el vector de ataque. | Sí | No necesaria. |
 
 ---
 ---
