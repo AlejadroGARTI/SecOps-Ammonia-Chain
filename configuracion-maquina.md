@@ -237,3 +237,17 @@ Se ejecutaron los siguientes comandos en cada usuario para borrar cualquier regi
 history -c
 history -w 
 ```
+
+## Configuración del firewall
+
+```bash
+root@ammonia:~# sudo ufw status
+Status: active
+
+To         Action   From
+---        ---      ---
+22/tcp     ALLOW    Anywhere
+7664/tcp   ALLOW    Anywhere
+22/tcp (v6) ALLOW   Anywhere (v6)
+7664/tcp (v6) ALLOW Anywhere (v6)
+```
