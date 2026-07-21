@@ -229,15 +229,6 @@ clara_immerwahr ALL=(ALL) NOPASSWD: /usr/bin/awk
 gpasswd -d haber_fritz sudo
 ```
 
-## Eliminación del historial
-
-Se ejecutaron los siguientes comandos en cada usuario para borrar cualquier registro de la línea de comandos
-
-```bash
-history -c
-history -w 
-```
-
 ## Configuración del firewall
 
 ```bash
@@ -250,4 +241,13 @@ To         Action   From
 7664/tcp   ALLOW    Anywhere
 22/tcp (v6) ALLOW   Anywhere (v6)
 7664/tcp (v6) ALLOW Anywhere (v6)
+```
+
+## Eliminación del historial
+
+Se ejecutaron los siguientes comandos en cada usuario para borrar cualquier registro de la línea de comandos
+
+```bash
+history -c
+history -w 
 ```
